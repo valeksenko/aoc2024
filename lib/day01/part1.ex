@@ -16,7 +16,7 @@ defmodule AoC2024.Day01.Part1 do
 
   defp to_tuples(input) do
     input
-    |> String.split
+    |> String.split()
     |> Enum.map(&String.to_integer/1)
     |> List.to_tuple()
   end
