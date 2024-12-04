@@ -19,8 +19,6 @@ defmodule AoC2024.Day04.Part1 do
   defp word_search(grid) do
     grid
     |> Enum.flat_map(&(run_search(&1, grid)))
-    |> Enum.reject(&Enum.empty?/1)
-    |> Enum.uniq()
   end
 
   defp run_search(start, grid) do
