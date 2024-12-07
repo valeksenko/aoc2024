@@ -12,6 +12,7 @@ jobs:
         with:
           userId: 387273
           sessionCookie: ${{ secrets.AOC_SESSION }}
+          year: 2024
       - uses: stefanzweifel/git-auto-commit-action@v5 # use v5
         with:
           commit_message: Update README stars
