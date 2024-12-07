@@ -1,6 +1,5 @@
 name: Update README with stars
-on:
-  push
+on: push
 
 jobs:
   update-readme:
@@ -9,7 +8,7 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v3
-      - uses: k2bd/advent-readme-stars@v1
+      - uses: k2bd/advent-readme-stars@v1.0.3
         with:
           userId: 387273
           sessionCookie: ${{ secrets.AOC_SESSION }}
