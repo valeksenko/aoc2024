@@ -1,4 +1,5 @@
 defmodule AoC2024.Day07.Part1Test do
+  @moduledoc false
   use ExUnit.Case
   doctest AoC2024.Day07.Part1
   import AoC2024.Day07.Part1

@@ -1,4 +1,8 @@
 defmodule Mix.Tasks.Day do
+  @moduledoc """
+    mix task for running AoC code
+  """
+
   use Mix.Task
 
   @notrim ~w[]
