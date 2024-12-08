@@ -1,6 +1,6 @@
-defmodule AoC2024.Day08.Part1 do
+defmodule AoC2024.Day08.Part2 do
   @moduledoc """
-    @see https://adventofcode.com/2024/day/8
+    @see https://adventofcode.com/2024/day/8#part2
   """
   @behaviour AoC2024.Day
 
@@ -20,9 +20,8 @@ defmodule AoC2024.Day08.Part1 do
     |> Enum.reject(&(elem(&1, 1) == @empty))
     |> Enum.reduce(Map.new(), &add_antena/2)
     |> Map.values()
-    |> Enum.flat_map(&add_antinodes/1)
+    |> Enum.flat_map(&(add_antinodes(&1, map)))
     |> Enum.uniq()
-    |> Enum.filter(&Map.has_key?(map, &1))
   end
 
   defp add_antena({p, a}, antenas) do
@@ -36,26 +35,22 @@ defmodule AoC2024.Day08.Part1 do
     |> elem(1)
   end
 
-  defp add_antinodes(antenas) do
+  defp add_antinodes(antenas, map) do
     antenas
     |> permutations()
-    |> Enum.flat_map(&add_antinode_pairs/1)
+    |> Enum.flat_map(&(add_antinode_pairs(&1, map)))
   end
 
-  defp add_antinode_pairs({{x1, y1}, {x2, y2}}) do
-    [
-      {
-        antinode_axis(x1, x2),
-        antinode_axis(y1, y2)
-      },
-      {
-        antinode_axis(x2, x1),
-        antinode_axis(y2, y1)
-      } 
-    ]
+  defp add_antinode_pairs({pos1, pos2}, map) do
+    antinode_pairs(pos1, pos2, map) ++ antinode_pairs(pos2, pos1, map)
   end
 
-  defp antinode_axis(n1, n2), do: n1 + (n1 - n2)
+  defp antinode_pairs({x1, y1}, {x2, y2}, map) do
+    {x1, y1}
+    |> Stream.iterate(fn {x, y} -> {x + (x1 - x2), y + (y1 - y2)} end)
+    |> Stream.take_while(&Map.has_key?(map, &1))
+    |> Enum.to_list()
+  end
 
   defp permutations(antenas) do
     antenas
