@@ -21,7 +21,7 @@ defmodule Aoc2024.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:nimble_parsec, "~> 1.2.3"},
+      {:nimble_parsec, "~> 1.2.3"}
     ]
   end
 end

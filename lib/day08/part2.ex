@@ -5,7 +5,7 @@ defmodule AoC2024.Day08.Part2 do
   @behaviour AoC2024.Day
 
   @impl AoC2024.Day
-  
+
   @empty "."
 
   def run(data) do
@@ -20,7 +20,7 @@ defmodule AoC2024.Day08.Part2 do
     |> Enum.reject(&(elem(&1, 1) == @empty))
     |> Enum.reduce(Map.new(), &add_antena/2)
     |> Map.values()
-    |> Enum.flat_map(&(add_antinodes(&1, map)))
+    |> Enum.flat_map(&add_antinodes(&1, map))
     |> Enum.uniq()
   end
 
@@ -29,7 +29,7 @@ defmodule AoC2024.Day08.Part2 do
     |> Map.get_and_update(
       a,
       fn as ->
-        {a, [p | (as || [])]}
+        {a, [p | as || []]}
       end
     )
     |> elem(1)
@@ -38,7 +38,7 @@ defmodule AoC2024.Day08.Part2 do
   defp add_antinodes(antenas, map) do
     antenas
     |> permutations()
-    |> Enum.flat_map(&(add_antinode_pairs(&1, map)))
+    |> Enum.flat_map(&add_antinode_pairs(&1, map))
   end
 
   defp add_antinode_pairs({pos1, pos2}, map) do
@@ -70,7 +70,7 @@ defmodule AoC2024.Day08.Part2 do
     |> Enum.with_index()
     |> Enum.reduce(Map.new(), &add_row/2)
   end
- 
+
   defp add_row({row, y}, map) do
     row
     |> String.graphemes()

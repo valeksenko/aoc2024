@@ -5,7 +5,7 @@ defmodule AoC2024.Day08.Part1 do
   @behaviour AoC2024.Day
 
   @impl AoC2024.Day
-  
+
   @empty "."
 
   def run(data) do
@@ -30,7 +30,7 @@ defmodule AoC2024.Day08.Part1 do
     |> Map.get_and_update(
       a,
       fn as ->
-        {a, [p | (as || [])]}
+        {a, [p | as || []]}
       end
     )
     |> elem(1)
@@ -51,7 +51,7 @@ defmodule AoC2024.Day08.Part1 do
       {
         antinode_axis(x2, x1),
         antinode_axis(y2, y1)
-      } 
+      }
     ]
   end
 
@@ -75,7 +75,7 @@ defmodule AoC2024.Day08.Part1 do
     |> Enum.with_index()
     |> Enum.reduce(Map.new(), &add_row/2)
   end
- 
+
   defp add_row({row, y}, map) do
     row
     |> String.graphemes()

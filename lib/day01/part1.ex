@@ -5,7 +5,7 @@ defmodule AoC2024.Day01.Part1 do
   @behaviour AoC2024.Day
 
   @impl AoC2024.Day
-  
+
   def run(data) do
     data
     |> Enum.map(&to_tuples/1)

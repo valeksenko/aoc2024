@@ -5,7 +5,7 @@ defmodule AoC2024.Day06.Part1 do
   @behaviour AoC2024.Day
 
   @impl AoC2024.Day
-  
+
   @empty "."
   @obstruction "#"
 
@@ -18,7 +18,7 @@ defmodule AoC2024.Day06.Part1 do
     @north => @east,
     @east => @south,
     @south => @west,
-    @west => @north,
+    @west => @north
   }
 
   def run(data) do
@@ -50,7 +50,7 @@ defmodule AoC2024.Day06.Part1 do
     |> Enum.with_index()
     |> Enum.reduce({Map.new(), nil}, &add_row/2)
   end
- 
+
   defp add_row({row, y}, state) do
     row
     |> String.graphemes()

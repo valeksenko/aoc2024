@@ -5,7 +5,7 @@ defmodule AoC2024.Day06.Part2 do
   @behaviour AoC2024.Day
 
   @impl AoC2024.Day
-  
+
   @empty "."
   @obstruction "#"
 
@@ -18,7 +18,7 @@ defmodule AoC2024.Day06.Part2 do
     @north => @east,
     @east => @south,
     @south => @west,
-    @west => @north,
+    @west => @north
   }
 
   def run(data) do
@@ -30,7 +30,7 @@ defmodule AoC2024.Day06.Part2 do
 
   defp add_obstructions({lab, start}) do
     lab
-    |> Enum.filter(fn {p, v} -> (v == @empty) && (p != start) end)
+    |> Enum.filter(fn {p, v} -> v == @empty && p != start end)
     |> Enum.map(fn {p, _} -> {Map.put(lab, p, @obstruction), start} end)
   end
 
@@ -42,9 +42,16 @@ defmodule AoC2024.Day06.Part2 do
   defp move({visited, pos, dir}, lab) do
     with dest <- next(pos, dir) do
       case lab[dest] do
-        @empty -> if MapSet.member?(visited, {dest, dir}), do: true, else: move({MapSet.put(visited, {dest, dir}), dest, dir}, lab)
-        @obstruction -> move({visited, pos, @turns[dir]}, lab)
-        nil -> false
+        @empty ->
+          if MapSet.member?(visited, {dest, dir}),
+            do: true,
+            else: move({MapSet.put(visited, {dest, dir}), dest, dir}, lab)
+
+        @obstruction ->
+          move({visited, pos, @turns[dir]}, lab)
+
+        nil ->
+          false
       end
     end
   end
@@ -56,7 +63,7 @@ defmodule AoC2024.Day06.Part2 do
     |> Enum.with_index()
     |> Enum.reduce({Map.new(), nil}, &add_row/2)
   end
- 
+
   defp add_row({row, y}, state) do
     row
     |> String.graphemes()

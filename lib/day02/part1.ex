@@ -5,7 +5,7 @@ defmodule AoC2024.Day02.Part1 do
   @behaviour AoC2024.Day
 
   @impl AoC2024.Day
-  
+
   @safe_range 1..3
 
   def run(data) do
@@ -18,7 +18,7 @@ defmodule AoC2024.Day02.Part1 do
     input
     |> String.split()
     |> Enum.map(&String.to_integer/1)
-    end
+  end
 
   defp safe_report?(report) do
     report
@@ -33,6 +33,6 @@ defmodule AoC2024.Day02.Part1 do
 
   defp monotonous?([h | t]) do
     sign = h / abs(h)
-    Enum.all?(t, fn e -> (e / abs(e)) == sign end)
+    Enum.all?(t, fn e -> e / abs(e) == sign end)
   end
 end

@@ -5,7 +5,7 @@ defmodule AoC2024.Day03.Part1 do
   @behaviour AoC2024.Day
 
   @impl AoC2024.Day
-  
+
   def run(data) do
     data
     |> Enum.flat_map(&to_multis/1)
@@ -16,13 +16,13 @@ defmodule AoC2024.Day03.Part1 do
   defp to_multis(input) do
     ~r/mul\(\d{1,3},\d{1,3}\)/
     |> Regex.scan(input)
-    |> Enum.concat
+    |> Enum.concat()
   end
 
   defp multiply(multi) do
     ~r/\d+/
     |> Regex.scan(multi)
-    |> Enum.concat
+    |> Enum.concat()
     |> Enum.map(&String.to_integer/1)
     |> Enum.product()
   end

@@ -23,5 +23,5 @@ defmodule AoC2024.Day07.Parser do
     |> to_equations()
   end
 
-  defp to_equations({:ok, [equations], "", _, _, _}), do: equations 
+  defp to_equations({:ok, [equations], "", _, _, _}), do: equations
 end

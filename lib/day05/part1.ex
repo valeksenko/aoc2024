@@ -7,7 +7,7 @@ defmodule AoC2024.Day05.Part1 do
   @behaviour AoC2024.Day
 
   @impl AoC2024.Day
-  
+
   def run(data) do
     data
     |> parse_rules()
@@ -18,7 +18,7 @@ defmodule AoC2024.Day05.Part1 do
 
   defp right_order({orderings, pages}) do
     pages
-    |> Enum.filter(&(ordered?(&1, orderings)))
+    |> Enum.filter(&ordered?(&1, orderings))
   end
 
   defp ordered?(pages, orderings) do
@@ -27,10 +27,10 @@ defmodule AoC2024.Day05.Part1 do
   end
 
   defp match_order?({page1, page2}, pages) do
-    case { Enum.find_index(pages, &(&1== page1)), Enum.find_index(pages, &(&1== page2)) } do
-      { nil, _ } -> true
-      { _, nil } -> true
-      { i1, i2 } -> i1 < i2
+    case {Enum.find_index(pages, &(&1 == page1)), Enum.find_index(pages, &(&1 == page2))} do
+      {nil, _} -> true
+      {_, nil} -> true
+      {i1, i2} -> i1 < i2
     end
   end
 

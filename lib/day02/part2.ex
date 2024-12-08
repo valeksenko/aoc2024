@@ -5,7 +5,7 @@ defmodule AoC2024.Day02.Part2 do
   @behaviour AoC2024.Day
 
   @impl AoC2024.Day
-  
+
   @safe_range 1..3
 
   def run(data) do
@@ -18,15 +18,15 @@ defmodule AoC2024.Day02.Part2 do
     input
     |> String.split()
     |> Enum.map(&String.to_integer/1)
-    end
+  end
 
   defp dampener_safe?(report) do
-    [ report | dampen(report) ]
+    [report | dampen(report)]
     |> Enum.any?(&safe_report?/1)
   end
 
   defp dampen([]), do: []
-  defp dampen([h | t]), do: [t | (for variant <- dampen(t), do: [h | variant])]
+  defp dampen([h | t]), do: [t | for(variant <- dampen(t), do: [h | variant])]
 
   defp safe_report?(report) do
     report
@@ -41,6 +41,6 @@ defmodule AoC2024.Day02.Part2 do
 
   defp monotonous?([h | t]) do
     sign = h / abs(h)
-    Enum.all?(t, fn e -> (e / abs(e)) == sign end)
+    Enum.all?(t, fn e -> e / abs(e) == sign end)
   end
 end

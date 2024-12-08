@@ -34,7 +34,7 @@ defmodule AoC2024.Day04.Part2 do
       {1, 1} => "A",
       {2, 0} => "M",
       {2, 2} => "M"
-    },
+    }
   ]
 
   def run(data) do
@@ -47,12 +47,12 @@ defmodule AoC2024.Day04.Part2 do
   defp word_search(grid) do
     grid
     |> Map.keys()
-    |> Enum.map(&(counts(&1, grid)))
+    |> Enum.map(&counts(&1, grid))
   end
 
   defp counts(start, grid) do
     @positions
-    |> Enum.count(&(match(start, &1, grid)))
+    |> Enum.count(&match(start, &1, grid))
   end
 
   defp match({x, y}, word, grid) do
