@@ -1,6 +1,6 @@
 defmodule AoC2024.Day05.Parser do
   @moduledoc false
-  
+
   import NimbleParsec
 
   new_line = ascii_string([?\n], 1)

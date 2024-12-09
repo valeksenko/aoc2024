@@ -1,6 +1,6 @@
 defmodule AoC2024.Day07.Parser do
   @moduledoc false
-  
+
   import NimbleParsec
 
   numbers =
