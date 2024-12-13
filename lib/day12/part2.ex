@@ -1,6 +1,6 @@
-defmodule AoC2024.Day12.Part1 do
+defmodule AoC2024.Day12.Part2 do
   @moduledoc """
-    @see https://adventofcode.com/2024/day/12
+    @see https://adventofcode.com/2024/day/12#part2
   """
   @behaviour AoC2024.Day
 
@@ -56,20 +56,34 @@ defmodule AoC2024.Day12.Part1 do
   end
 
   defp fence_cost(region) do
-    length(region) * perimeter(region)
+    length(region) * num_sides(region)
   end
 
-  defp perimeter(region) do
+  defp num_sides(region) do
     region
-    |> Enum.map(&no_neighbors(&1, region))
+    |> Enum.flat_map(&no_neighbors(&1, region))
+    |> Enum.group_by(&elem(&1, 0))
+    |> Enum.flat_map(&map_axis/1)
+    |> Enum.map(&sides/1)
     |> Enum.sum()
   end
 
+  defp map_axis({xd, outline}) do
+    with {on, take} <- if(xd == 0, do: {1, 0}, else: {0, 1}) do
+      outline
+      |> Enum.map(&elem(&1, 1))
+      |> Enum.group_by(&elem(&1, on))
+      |> Map.values()
+      |> Enum.map(fn l -> l |> Enum.map(&elem(&1, take)) |> Enum.sort() end)
+    end
+  end
+
+  defp sides(a), do: 1 + (Enum.zip(a, tl(a)) |> Enum.count(fn {k, l} -> l - k != 1 end))
+
   defp no_neighbors({x, y}, region) do
     @neighbors
-    |> Enum.map(fn {xd, yd} -> {x + xd, y + yd} end)
-    |> Enum.reject(&Enum.member?(region, &1))
-    |> length()
+    |> Enum.map(fn {xd, yd} -> {xd, {x + xd, y + yd}} end)
+    |> Enum.reject(fn {_, pos} -> Enum.member?(region, pos) end)
   end
 
   defp parse(data) do
