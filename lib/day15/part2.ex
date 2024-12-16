@@ -59,31 +59,88 @@ defmodule AoC2024.Day15.Part2 do
 
   defp move_box({x, y}, part, {xd, yd}, warehouse) do
     IO.inspect({{x, y}, part, {xd, yd}}, label: "move_box")
-    with next1 <- {x + xd, y + yd}, next2 <- {x + xd + part, y + yd} do
-      case {{xd, yd}, part, Map.get(warehouse, next1), Map.get(warehouse, next2)} |> IO.inspect do
-        {@left, _, _, nil} -> {true, warehouse |> Map.delete({x, y}) |> Map.put(next1, @part2) |> Map.put(next2, @part1)}
-        {@left, _, _, @wall} -> {false, warehouse}
-        {@left, _, _, _} -> move_box(next2, @part2, {xd, yd}, warehouse) |> (fn {r, w} -> {r, w |> Map.delete({x, y}) |> Map.put(next1, @part2) |> Map.put(next2, @part1)} end).()
 
-        {@right, _, _, nil} -> {true, warehouse |> Map.delete({x, y}) |> Map.put(next1, @part1) |> Map.put(next2, @part2)}
-        {@right, _, _, @wall} -> {false, warehouse}
-        {@right, _, _, _} -> move_box(next2, @part1, {xd, yd}, warehouse) |> (fn {r, w} -> {r, w |> Map.delete({x, y}) |> Map.put(next1, @part1) |> Map.put(next2, @part2)} end).()
+    with next1 <- {x + xd, y + yd}, next2 <- {x + xd + part, y + yd} do
+      case {{xd, yd}, part, Map.get(warehouse, next1), Map.get(warehouse, next2)}
+           |> IO.inspect() do
+        {@left, _, _, nil} ->
+          {true,
+           warehouse |> Map.delete({x, y}) |> Map.put(next1, @part2) |> Map.put(next2, @part1)}
+
+        {@left, _, _, @wall} ->
+          {false, warehouse}
+
+        {@left, _, _, _} ->
+          move_box(next2, @part2, {xd, yd}, warehouse)
+          |> (fn {r, w} ->
+                {r, w |> Map.delete({x, y}) |> Map.put(next1, @part2) |> Map.put(next2, @part1)}
+              end).()
+
+        {@right, _, _, nil} ->
+          {true,
+           warehouse |> Map.delete({x, y}) |> Map.put(next1, @part1) |> Map.put(next2, @part2)}
+
+        {@right, _, _, @wall} ->
+          {false, warehouse}
+
+        {@right, _, _, _} ->
+          move_box(next2, @part1, {xd, yd}, warehouse)
+          |> (fn {r, w} ->
+                {r, w |> Map.delete({x, y}) |> Map.put(next1, @part1) |> Map.put(next2, @part2)}
+              end).()
 
         # up & down
-        {_, _, nil, nil} -> {true, warehouse |> Map.delete({x, y}) |> Map.delete({x + part, y}) |> Map.put(next1, part) |> Map.put(next2, -part)}
+        {_, _, nil, nil} ->
+          {true,
+           warehouse
+           |> Map.delete({x, y})
+           |> Map.delete({x + part, y})
+           |> Map.put(next1, part)
+           |> Map.put(next2, -part)}
 
-        {_, _, @wall, _} -> {false, warehouse}
-        {_, _, _, @wall} -> {false, warehouse}
+        {_, _, @wall, _} ->
+          {false, warehouse}
 
-         # 1:1 box stack
-        {_, p, p, _} -> move_box(next1, p, {xd, yd}, warehouse) |> (fn {r, w} -> {r, w |> Map.delete({x, y}) |> Map.delete({x + part, y}) |> Map.put(next1, part) |> Map.put(next2, -part)} end).()
+        {_, _, _, @wall} ->
+          {false, warehouse}
+
+        # 1:1 box stack
+        {_, p, p, _} ->
+          move_box(next1, p, {xd, yd}, warehouse)
+          |> (fn {r, w} ->
+                {r,
+                 w
+                 |> Map.delete({x, y})
+                 |> Map.delete({x + part, y})
+                 |> Map.put(next1, part)
+                 |> Map.put(next2, -part)}
+              end).()
 
         # 1:1 box stack shifted
-        {_, _, nil, _} -> move_box(next2, part, {xd, yd}, warehouse) |> (fn {r, w} -> {r, w |> Map.delete({x + part + part, y}) |> Map.delete({x + part, y}) |> Map.put(next1, part) |> Map.put(next2, -part)} end).()
-        {_, _, _, nil} -> move_box(next1, part, {xd, yd}, warehouse) |> (fn {r, w} -> {r, w |> Map.delete({x + part + part, y}) |> Map.delete({x + part, y}) |> Map.put(next1, part) |> Map.put(next2, -part)} end).()
+        {_, _, nil, _} ->
+          move_box(next2, part, {xd, yd}, warehouse)
+          |> (fn {r, w} ->
+                {r,
+                 w
+                 |> Map.delete({x + part + part, y})
+                 |> Map.delete({x + part, y})
+                 |> Map.put(next1, part)
+                 |> Map.put(next2, -part)}
+              end).()
 
-        # 2:1 box stack
-        #{_, _, _, _} ->  move_boxes(next1, next2, {xd, yd}, warehouse)
+        {_, _, _, nil} ->
+          move_box(next1, part, {xd, yd}, warehouse)
+          |> (fn {r, w} ->
+                {r,
+                 w
+                 |> Map.delete({x + part + part, y})
+                 |> Map.delete({x + part, y})
+                 |> Map.put(next1, part)
+                 |> Map.put(next2, -part)}
+              end).()
+
+          # 2:1 box stack
+          # {_, _, _, _} ->  move_boxes(next1, next2, {xd, yd}, warehouse)
       end
     end
   end
@@ -145,14 +202,14 @@ defmodule AoC2024.Day15.Part2 do
   defp inspect_warehouse({robot, warehouse}) do
     for y <- 0..(warehouse |> Enum.map(fn {{_, yp}, _} -> yp end) |> Enum.max()) do
       for x <- 0..(warehouse |> Enum.map(fn {{xp, _}, _} -> xp end) |> Enum.max()),
-          do: IO.binwrite(
-            case Map.get(warehouse |> Map.put(robot, "@"), {x, y}, ".") do
-              @part1 -> "["
-              @part2 -> "]"
-              v -> v
-            end
-          )
-
+          do:
+            IO.binwrite(
+              case Map.get(warehouse |> Map.put(robot, "@"), {x, y}, ".") do
+                @part1 -> "["
+                @part2 -> "]"
+                v -> v
+              end
+            )
 
       IO.binwrite("\n")
     end
