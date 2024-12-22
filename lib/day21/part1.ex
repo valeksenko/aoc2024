@@ -19,9 +19,8 @@ defmodule AoC2024.Day21.Part1 do
     {1, 3} => "2",
     {2, 3} => "3",
     {1, 4} => "0",
-    {2, 4} => "A",
+    {2, 4} => "A"
   }
-
 
   @directional :directional
   @dstart {2, 0}
@@ -30,7 +29,7 @@ defmodule AoC2024.Day21.Part1 do
     {2, 0} => :activate,
     {0, 1} => {-1, 0},
     {1, 1} => {0, 1},
-    {2, 1} => {1, 0},
+    {2, 1} => {1, 0}
   }
 
   def run(data) do
@@ -55,7 +54,7 @@ defmodule AoC2024.Day21.Part1 do
           {@directional, @dstart, @directional_keypad},
           {@directional, @dstart, @directional_keypad},
           {@directional, @dstart, @directional_keypad},
-          {@numeric, @nstart, @numeric_keypad},
+          {@numeric, @nstart, @numeric_keypad}
         ],
         []
       },
@@ -70,7 +69,6 @@ defmodule AoC2024.Day21.Part1 do
       [1, 2]
     }
   end
-
 
   defp to_int(code) do
     code
