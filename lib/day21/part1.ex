@@ -22,11 +22,12 @@ defmodule AoC2024.Day21.Part1 do
     {2, 4} => "A"
   }
 
+  @activate :activate
   @directional :directional
   @dstart {2, 0}
   @directional_keypad %{
     {1, 0} => {0, -1},
-    {2, 0} => :activate,
+    {2, 0} => @activate,
     {0, 1} => {-1, 0},
     {1, 1} => {0, 1},
     {2, 1} => {1, 0}
@@ -51,10 +52,9 @@ defmodule AoC2024.Day21.Part1 do
     |> Enum.reduce(
       {
         [
-          {@directional, @dstart, @directional_keypad},
-          {@directional, @dstart, @directional_keypad},
-          {@directional, @dstart, @directional_keypad},
-          {@numeric, @nstart, @numeric_keypad}
+          {@directional, @dstart},
+          {@directional, @dstart},
+          {@numeric, @nstart}
         ],
         []
       },
@@ -66,9 +66,16 @@ defmodule AoC2024.Day21.Part1 do
   defp find_path(code, state) do
     {
       [],
-      [1, 2]
+      []
     }
   end
+
+  defp move_all(pads, action) do
+    pads
+    |> Enum.reduce([action], &move/2)
+  end
+
+  defp move({@directional, {x, y}}, @activate), do: 1
 
   defp to_int(code) do
     code
