@@ -31,4 +31,5 @@ Tests: `mix test`
 | [Day 18](https://adventofcode.com/2024/day/18) | ⭐ | ⭐ |
 | [Day 19](https://adventofcode.com/2024/day/19) | ⭐ |   |
 | [Day 22](https://adventofcode.com/2024/day/22) | ⭐ | ⭐ |
+| [Day 23](https://adventofcode.com/2024/day/23) | ⭐ |   |
 <!--- advent_readme_stars table --->
