@@ -102,7 +102,7 @@ defmodule AoC2024.Day24.Part2 do
     |> Map.keys()
     |> Enum.filter(&String.starts_with?(&1, "z"))
     |> Enum.sort()
-    |> Enun.join(",")
+    |> Enum.join(",")
   end
 
   defp in_progress?({_, connections}) do
