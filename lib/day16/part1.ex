@@ -36,6 +36,7 @@ defmodule AoC2024.Day16.Part1 do
   defp find_path({start, finish, maze}) do
     goal = fn {pos, _, _} -> pos == finish end
     move_cost = fn _, {_, _, cost} -> cost end
+
     move = fn {pos, dir, _}, _ ->
       moves(pos, dir) |> Enum.reject(&(Map.get(maze, elem(&1, 0)) == @wall))
     end
@@ -45,10 +46,13 @@ defmodule AoC2024.Day16.Part1 do
 
   defp dijkstra(heap, resolved, goal, move, move_cost) do
     case Heap.split(heap) do
-      {nil, _} -> nil
-      {{node_cost, node}, rest} -> if Enum.member?(resolved, node),
-        do: dijkstra(rest, resolved, goal, move, move_cost),
-        else: dijkstra_node(node, node_cost, rest, [node | resolved], goal, move, move_cost)
+      {nil, _} ->
+        nil
+
+      {{node_cost, node}, rest} ->
+        if Enum.member?(resolved, node),
+          do: dijkstra(rest, resolved, goal, move, move_cost),
+          else: dijkstra_node(node, node_cost, rest, [node | resolved], goal, move, move_cost)
     end
   end
 
