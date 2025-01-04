@@ -24,6 +24,7 @@ defmodule Aoc2024.MixProject do
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:nimble_parsec, "~> 1.2.3"},
       {:eastar, "~> 0.5.1"},
+      {:heap, "~> 3.0.0"},
       {:memoize, "~> 1.4"}
     ]
   end

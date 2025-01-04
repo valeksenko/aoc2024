@@ -55,12 +55,14 @@ defmodule AoC2024.Astar do
                                                                            {openmap, parents} =
                                                                              continue ->
           if MapSet.member?(closedset, y) do
+            # IO.puts "MEM #{inspect y}"
             continue
           else
             est_g = HeapMap.get_by_key(openmap, x) + dist.(x, y)
 
+            # IO.inspect(openmap.dict |> Enum.filter(fn {{n, _, _}, _} -> elem(n, 0) == 12 end), label: "dict")
             {ty, gy} = HeapMap.mapping(openmap, y)
-
+            # IO.puts "#{inspect y} - #{est_g} : #{gy}"
             if gy do
               if est_g < gy do
                 openmap = openmap |> HeapMap.delete(ty, y)

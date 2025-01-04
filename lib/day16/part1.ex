@@ -37,7 +37,7 @@ defmodule AoC2024.Day16.Part1 do
     goal = fn {pos, _, _} -> pos == finish end
     move_cost = fn _, {_, _, cost} -> cost end
 
-    move = fn {pos, dir, _}, _ ->
+    move = fn {pos, dir, _} ->
       moves(pos, dir) |> Enum.reject(&(Map.get(maze, elem(&1, 0)) == @wall))
     end
 
@@ -61,7 +61,7 @@ defmodule AoC2024.Day16.Part1 do
       do: node_cost,
       else:
         node
-        |> move.(resolved)
+        |> move.()
         |> Enum.reduce(heap, fn n, h -> h |> Heap.push({node_cost + move_cost.(node, n), n}) end)
         |> dijkstra(resolved, goal, move, move_cost)
   end
