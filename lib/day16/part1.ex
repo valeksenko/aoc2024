@@ -36,16 +36,30 @@ defmodule AoC2024.Day16.Part1 do
   defp find_path({start, finish, maze}) do
     goal = fn {pos, _, _} -> pos == finish end
     move_cost = fn _, {_, _, cost} -> cost end
-    # we can't estimate, so using it as a Dijkstra's
-    estimated_cost = fn _, _ -> 1 end
-
-    move = fn {pos, dir, _} ->
+    move = fn {pos, dir, _}, _ ->
       moves(pos, dir) |> Enum.reject(&(Map.get(maze, elem(&1, 0)) == @wall))
     end
 
-    Astar.astar({move, move_cost, estimated_cost}, {start, @east, 0}, goal)
-    |> Enum.map(&elem(&1, 2))
-    |> Enum.sum()
+    dijkstra(Heap.min() |> Heap.push({0, {start, @east, 0}}), [], goal, move, move_cost)
+  end
+
+  defp dijkstra(heap, resolved, goal, move, move_cost) do
+    case Heap.split(heap) do
+      {nil, _} -> nil
+      {{node_cost, node}, rest} -> if Enum.member?(resolved, node),
+        do: dijkstra(rest, resolved, goal, move, move_cost),
+        else: dijkstra_node(node, node_cost, rest, [node | resolved], goal, move, move_cost)
+    end
+  end
+
+  defp dijkstra_node(node, node_cost, heap, resolved, goal, move, move_cost) do
+    if goal.(node),
+      do: node_cost,
+      else:
+        node
+        |> move.(resolved)
+        |> Enum.reduce(heap, fn n, h -> h |> Heap.push({node_cost + move_cost.(node, n), n}) end)
+        |> dijkstra(resolved, goal, move, move_cost)
   end
 
   defp moves({x, y}, {xd, yd}) do
